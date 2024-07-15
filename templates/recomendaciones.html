@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Recomendaciones</title>
+    <style>
+        body {
+            background-color: #f3f4f6; /* Цвет фона */
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Минимальная высота на весь экран */
+        }
+
+        .container {
+            max-width: 800px; /* Максимальная ширина контейнера */
+            width: 100%; /* Ширина контейнера на всю доступную ширину */
+            margin: 0 auto; /* Центрирование контейнера */
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(25%, 1fr)); /* Минимальная ширина 25% экрана, авто-расширение */
+            gap: 20px;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px; /* Отступ сверху для раздела игр */
+        }
+
+        .game-item {
+            text-align: center;
+            border: 1px solid #6ee7b7; /* Салатовая рамка */
+            background-color: #fff; /* Белый фон */
+            padding: 10px;
+            border-radius: 10px; /* Скругленные углы */
+            height: 100%; /* Заполнение высоты контейнера */
+            max-width: 100%; /* Максимальная ширина элемента */
+        }
+
+        .game-image {
+            max-width: 100px;
+            max-height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .game-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .game-description {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .rating-fieldset {
+            text-align: left;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px; /* Отступ сверху для кнопок */
+        }
+
+        .logout-button {
+            background-color: #6ee7b7; /* Салатовая заливка кнопки */
+            color: #fff; /* Белый текст */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Recomendaciones para <span style="font-weight: bold;">{{ user }}</span></h2>
+        <p><strong>Juegos valorados:</strong> {{ cant_valorados }}</p>
+        <p><strong>Juegos ignorados:</strong> {{ cant_ignorados }}</p>
+        
+        <p><strong>Método utilizado:</strong> {{ metodo_utilizado }}</p>
+
+        <form action="/recomendaciones" method="post">
+            <ul class="game-container">
+                {% for game in games %}
+                    <li class="game-item">
+                        <span class="game-title">{{ game['name'] }}</span><br>
+                        <img src="{{ game['image_url'] }}" alt="{{ game['name'] }}" class="game-image"><br>
+                        <span class="game-description">{{ game['yearpublished'] }}{{ game['description'] }}</span><br>
+                        <input type="hidden" name="{{ game['id'] }}" value="{{ game['id'] }}">
+                        <fieldset class="rating-fieldset">
+                            <legend>Rating:</legend>
+                            {% for rating in range(1, 11) %}
+                                <label for="{{ game['id'] }}_{{ rating }}">
+                                    <input type="radio" id="{{ game['id'] }}_{{ rating }}" name="{{ game['id'] }}" value="{{ rating }}">
+                                    {{ rating }}
+                                </label>
+                            {% endfor %}
+                        </fieldset>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="button-container">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg">Enviar</button>
+                <button type="submit" formaction="/reset" class="bg-green-500 text-white px-4 py-2 rounded-lg" method="post">Resetear</button>
+                <button type="submit" formaction="/logout" class="logout-button" method="post">Cerrar sesión</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

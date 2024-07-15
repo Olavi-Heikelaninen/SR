@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Высота на весь экран */
+            background-color: #f3f4f6; /* Цвет фона */
+        }
+
+        .login-form {
+            background-color: #6ee7b7; /* Салатовая заливка */
+            border-radius: 10px; /* Скругленные края */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .input-field {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-form">
+        <h2>Login</h2>
+        <form action="/" method="post">
+            <div class="input-field">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" class="rounded-lg">
+            </div>
+            <button type="submit" class="bg-white text-gray-800 px-4 py-2 rounded-lg">Login</button>
+        </form>
+    </div>
+</body>
+</html>

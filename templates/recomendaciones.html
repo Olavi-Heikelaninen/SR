@@ -90,8 +90,9 @@
                     <li class="game-item">
                         <span class="game-title">{{ game['name'] }}</span><br>
                         <img src="{{ game['image_url'] }}" alt="{{ game['name'] }}" class="game-image"><br>
-                        <span class="game-description">{{ game['yearpublished'] }}{{ game['description'] }}</span><br>
+                        <span class="game-description">{{ game['description'] }}</span><br>
                         <input type="hidden" name="{{ game['id'] }}" value="{{ game['id'] }}">
+                        <span class="game-description">Published: {{ game['yearpublished'] }}</span><br>
                         <fieldset class="rating-fieldset">
                             <legend>Rating:</legend>
                             {% for rating in range(1, 11) %}

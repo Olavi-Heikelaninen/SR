@@ -6,7 +6,7 @@ import lightfm as lfm
 from lightfm import data
 from lightfm import cross_validation
 from lightfm import evaluation
-import surprise as sp
+#import surprise as sp
 
 import whoosh as wh
 from whoosh import fields
@@ -14,7 +14,7 @@ from whoosh import index
 from whoosh import qparser
 
 THIS_FOLDER = os.path.dirname(os.path.abspath("__file__"))
-DATABASE = os.path.join(THIS_FOLDER, "bgg_2000.db")
+DATABASE = os.path.join(THIS_FOLDER, "data/bgg_2000.db")
 
 def sql_execute(query, params=None):
     con = sqlite3.connect(DATABASE)
@@ -46,20 +46,10 @@ def crear_usuario(username):
     sql_execute(query, (username,))
     return
 
-"""
+
 def insertar_interacciones(id_game, username, rating, interacciones="ratings"):
     query = f"INSERT INTO {interacciones}(id, username, rating) VALUES (?, ?, ?) ON CONFLICT(id, username) DO UPDATE SET rating=?;"
     sql_execute(query, (id_game, username, rating, rating))
-    return
-"""
-def insertar_interacciones(id_game, username, rating, interacciones="ratings"):
-    if id_game is not None and username is not None and rating is not None:
-        query = f"""
-            INSERT INTO {interacciones} (id, username, rating) 
-            VALUES (?, ?, ?) 
-            ON CONFLICT(id, username) DO UPDATE SET rating=excluded.rating;
-        """
-        sql_execute(query, (id_game, username, rating))
     return
 
 def reset_usuario(username, interacciones="ratings"):
@@ -73,7 +63,7 @@ def obtener_juego(id_game):
     return game
 
 def valorados(username, interacciones="ratings"):
-    query = f"SELECT * FROM {interacciones} WHERE username = ? AND rating > 1"
+    query = f"SELECT * FROM {interacciones} WHERE username = ? AND rating > 1 AND rating is not null AND rating != ''"
     valorados = sql_select(query, (username,))
     return valorados
 
